@@ -5,16 +5,23 @@ import io
 import os
 from datetime import datetime
 
+
 app = Flask(
     __name__,
     template_folder="../templates",
     static_folder="../static"
 )
 
+
 DATABASE = "/tmp/parent_sunscreen_survey.db"
 
 
+# =========================
+# データベース
+# =========================
+
 def get_db():
+
     conn = sqlite3.connect(DATABASE)
 
     conn.execute("""
@@ -40,60 +47,149 @@ def get_db():
     return conn
 
 
+# =========================
+# アンケート画面
+# =========================
+
 @app.route("/")
 def index():
+
     return render_template("index2.html")
 
+
+# =========================
+# 回答送信
+# =========================
 
 @app.route("/submit", methods=["POST"])
 def submit():
 
-    # Q1：お子さんの年齢
+    # Q1
     child_age = request.form.getlist("child_age")
 
-    # Q2：日焼け止めを使っているか
-    sunscreen_use = request.form.get("sunscreen_use", "")
+    # Q2
+    sunscreen_use = request.form.get(
+        "sunscreen_use",
+        ""
+    )
 
-    # Q3：いつ使うか
-    use_timing = request.form.get("use_timing", "")
-    use_timing_other = request.form.get("use_timing_other", "")
+    # Q3
+    use_timing = request.form.get(
+        "use_timing",
+        ""
+    )
 
-    # Q4：子どもが嫌がるか
-    child_dislike = request.form.get("child_dislike", "")
+    use_timing_other = request.form.get(
+        "use_timing_other",
+        ""
+    )
 
-    # Q5：嫌がる理由
-    dislike_reason = request.form.getlist("dislike_reason")
-    dislike_reason_other = request.form.get("dislike_reason_other", "")
+    # Q4
+    child_dislike = request.form.get(
+        "child_dislike",
+        ""
+    )
 
-    # Q6：親が困っていること
-    parent_problem = request.form.get("parent_problem", "")
+    # Q5
+    dislike_reason = request.form.getlist(
+        "dislike_reason"
+    )
 
-    # Q7：嫌がる子への塗り方
-    how_to_apply = request.form.get("how_to_apply", "")
+    dislike_reason_other = request.form.get(
+        "dislike_reason_other",
+        ""
+    )
 
-    # Q8：自分から塗りたくなる日焼け止め
-    want_self_apply = request.form.get("want_self_apply", "")
+    # Q6
+    parent_problem = request.form.get(
+        "parent_problem",
+        ""
+    )
 
-    # Q9：子どもが喜びそうな工夫
-    child_idea = request.form.get("child_idea", "")
+    # Q7
+    how_to_apply = request.form.get(
+        "how_to_apply",
+        ""
+    )
 
-    # 複数選択をカンマ区切りで保存
+    # Q8
+    want_self_apply = request.form.get(
+        "want_self_apply",
+        ""
+    )
+
+    # Q9
+    child_idea = request.form.get(
+        "child_idea",
+        ""
+    )
+
+
+    # =========================
+    # 複数選択を文字列にする
+    # =========================
+
     child_age_text = ", ".join(child_age)
-    dislike_reason_text = ", ".join(dislike_reason)
 
-    # 「その他」の内容を回答に含める
-    if use_timing == "その他" and use_timing_other:
-        use_timing_text = f"その他: {use_timing_other}"
+    dislike_reason_text = ", ".join(
+        dislike_reason
+    )
+
+
+    # =========================
+    # Q3 その他
+    # =========================
+
+    if (
+        use_timing == "その他"
+        and use_timing_other.strip()
+    ):
+
+        use_timing_text = (
+            f"その他: {use_timing_other.strip()}"
+        )
+
     else:
+
         use_timing_text = use_timing
 
-    if "その他" in dislike_reason and dislike_reason_other:
-        if dislike_reason_text:
-            dislike_reason_text += f", その他: {dislike_reason_other}"
-        else:
-            dislike_reason_text = f"その他: {dislike_reason_other}"
 
-    created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    # =========================
+    # Q5 その他
+    # =========================
+
+    if (
+        "その他" in dislike_reason
+        and dislike_reason_other.strip()
+    ):
+
+        if dislike_reason_text:
+
+            dislike_reason_text += (
+                f", その他: "
+                f"{dislike_reason_other.strip()}"
+            )
+
+        else:
+
+            dislike_reason_text = (
+                f"その他: "
+                f"{dislike_reason_other.strip()}"
+            )
+
+
+    # =========================
+    # 回答日時
+    # =========================
+
+    created_at = datetime.now().strftime(
+        "%Y-%m-%d %H:%M:%S"
+    )
+
+
+    # =========================
+    # 保存
+    # =========================
 
     conn = get_db()
 
@@ -132,23 +228,44 @@ def submit():
     )
 
     conn.commit()
+
     conn.close()
 
-    return redirect(url_for("thanks"))
 
+    return redirect(
+        url_for("thanks")
+    )
+
+
+# =========================
+# ありがとうございました
+# =========================
 
 @app.route("/thanks")
 def thanks():
-    return render_template("thanks2.html")
 
+    return render_template(
+        "thanks2.html"
+    )
+
+
+# =========================
+# CSVダウンロード
+# =========================
 
 @app.route("/download_csv")
 def download_csv():
 
     if not os.path.exists(DATABASE):
-        return "まだ回答データがありません。", 200
+
+        return (
+            "まだ回答データがありません。",
+            200
+        )
+
 
     conn = get_db()
+
 
     cursor = conn.execute(
         """
@@ -171,13 +288,16 @@ def download_csv():
         """
     )
 
+
     rows = cursor.fetchall()
 
     conn.close()
 
+
     output = io.StringIO()
 
     writer = csv.writer(output)
+
 
     writer.writerow([
         "ID",
@@ -195,19 +315,33 @@ def download_csv():
         "子どもが喜びそうな工夫"
     ])
 
+
     writer.writerows(rows)
+
 
     response = Response(
         output.getvalue(),
         mimetype="text/csv; charset=utf-8"
     )
 
+
     response.headers[
         "Content-Disposition"
-    ] = "attachment; filename=parent_sunscreen_survey.csv"
+    ] = (
+        "attachment; "
+        "filename=parent_sunscreen_survey.csv"
+    )
+
 
     return response
 
 
+# =========================
+# ローカル実行
+# =========================
+
 if __name__ == "__main__":
-    app.run(debug=True)
+
+    app.run(
+        debug=True
+    )
