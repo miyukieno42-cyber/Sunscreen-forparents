@@ -265,3 +265,111 @@ a:hover {
 
 }
 ```
+
+/* =========================
+   質問を1つずつ表示
+========================= */
+
+.question {
+    display: none;
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 30px;
+    margin: 20px auto;
+    max-width: 760px;
+    box-shadow: 0 6px 25px rgba(80, 120, 90, 0.08);
+}
+
+.question.active {
+    display: block;
+}
+
+
+/* =========================
+   ページ全体の横幅
+========================= */
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #eef8f1;
+    color: #405348;
+    overflow-x: hidden;
+}
+
+
+/* =========================
+   質問番号
+========================= */
+
+.question-number {
+    color: #6d9a7b;
+    font-weight: bold;
+}
+
+
+/* =========================
+   質問タイトル
+========================= */
+
+.question h2 {
+    color: #527d63;
+    line-height: 1.6;
+}
+
+
+/* =========================
+   説明文
+========================= */
+
+.question p {
+    color: #405348;
+}
+
+
+/* =========================
+   選択肢
+========================= */
+
+.question label {
+    color: #405348;
+}
+
+
+/* =========================
+   ボタン
+========================= */
+
+.next-button {
+    background: #8fbe9d;
+    color: white;
+}
+
+.next-button:hover {
+    background: #78aa88;
+}
+
+.back-button {
+    background: #e1eee5;
+    color: #5c7564;
+}
+
+.back-button:hover {
+    background: #d3e6d9;
+}
+
+
+/* =========================
+   スマホ対応
+========================= */
+
+@media (max-width: 600px) {
+
+    .question {
+        width: 100%;
+        padding: 20px;
+        margin: 10px auto;
+        border-radius: 18px;
+    }
+
+}
