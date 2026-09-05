@@ -1,131 +1,193 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ご回答ありがとうございました</title>
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-    <title>回答ありがとうございました</title>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f1f8f3, #e7f2eb);
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Hiragino Kaku Gothic ProN",
+                "Hiragino Sans",
+                "Yu Gothic",
+                "Meiryo",
+                sans-serif;
+            color: #466b59;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
 
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='style2.css') }}"
-    >
+        .thanks-card {
+            width: 100%;
+            max-width: 680px;
+            min-height: 720px;
+            background: #ffffff;
+            border-radius: 44px;
+            padding: 70px 70px 55px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(60, 100, 80, 0.08);
 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .leaf {
+            font-size: 64px;
+            line-height: 1;
+            margin-bottom: 35px;
+        }
+
+        .small-title {
+            font-size: 30px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            letter-spacing: 0.05em;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 52px;
+            line-height: 1.55;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+        }
+
+        .message {
+            margin-top: 42px;
+            color: #94aaa0;
+            font-size: 23px;
+            line-height: 2;
+            font-weight: 600;
+        }
+
+        .name {
+            margin-top: 45px;
+            color: #6fa987;
+            font-size: 19px;
+            line-height: 1.8;
+            font-weight: 600;
+        }
+
+        .name span {
+            display: block;
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 100%;
+            max-width: 510px;
+            min-height: 86px;
+
+            margin-top: 48px;
+
+            background: #70ad87;
+            color: white;
+            text-decoration: none;
+
+            border-radius: 50px;
+
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+
+            transition: 0.2s ease;
+        }
+
+        .back-button:hover {
+            background: #5f9c76;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 20px 14px;
+            }
+
+            .thanks-card {
+                min-height: 650px;
+                padding: 50px 25px 40px;
+                border-radius: 32px;
+            }
+
+            .leaf {
+                font-size: 50px;
+                margin-bottom: 25px;
+            }
+
+            .small-title {
+                font-size: 24px;
+            }
+
+            h1 {
+                font-size: 38px;
+            }
+
+            .message {
+                font-size: 18px;
+                margin-top: 30px;
+            }
+
+            .name {
+                font-size: 16px;
+                margin-top: 32px;
+            }
+
+            .back-button {
+                min-height: 72px;
+                font-size: 18px;
+                margin-top: 38px;
+            }
+        }
+    </style>
 </head>
-
 
 <body>
 
-<main class="survey-card">
+    <main class="thanks-card">
 
-    <header class="header">
+        <div class="leaf">🌿</div>
 
-        <div class="sun">
-            🌿
+        <div class="small-title">
+            ご回答
         </div>
 
         <h1>
-            ご回答<br>
             ありがとうございました
         </h1>
 
-        <p>
+        <div class="message">
             アンケートへのご協力<br>
             ありがとうございました。
-        </p>
+        </div>
 
-    </header>
+        <div class="name">
+            <span>榎本実幸</span>
+            <span>miyuki.eno</span>
+        </div>
 
-
-    <div
-        style="
-            text-align:center;
-            margin-top:50px;
-        "
-    >
-
-        <a
-            href="/"
-            style="
-                display:block;
-                padding:18px 25px;
-                border-radius:999px;
-                background:#6fa982;
-                color:white;
-                text-decoration:none;
-                font-weight:800;
-            "
-        >
+        <a href="{{ url_for('index') }}" class="back-button">
             アンケートの最初に戻る
         </a>
 
-    </div>
-
-</main>
+    </main>
 
 </body>
-
-</html>            style="
-                font-size: 54px;
-                margin-bottom: 22px;
-            "
-        >
-            🌿
-        </div>
-
-
-        <h2>
-            ありがとうございました！
-        </h2>
-
-
-        <p
-            style="
-                line-height: 2;
-                margin-top: 22px;
-                color: #7b8d82;
-            "
-        >
-            アンケートへのご協力<br>
-            ありがとうございました。
-        </p>
-
-
-        <div
-            style="
-                margin-top: 35px;
-                padding: 20px;
-                border-radius: 18px;
-                background: #f1f8f3;
-                color: #66806e;
-                line-height: 1.8;
-            "
-        >
-            ご回答いただいた内容は、<br>
-            今後の参考にさせていただきます。
-        </div>
-
-
-        <div
-            style="
-                margin-top: 35px;
-                color: #8a9a90;
-                font-size: 14px;
-            "
-        >
-            榎本　実幸
-        </div>
-
-    </section>
-
-</main>
-
-</body>
-
 </html>
