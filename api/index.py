@@ -7,15 +7,35 @@ import os
 
 
 # =========================================================
-# Flask設定
+# フォルダ設定
 # =========================================================
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# このファイルは /api/index.py にある
+API_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# プロジェクトのルート
+# /api の1つ上
+BASE_DIR = os.path.dirname(API_DIR)
+
+TEMPLATE_DIR = os.path.join(
+    BASE_DIR,
+    "templates"
+)
+
+STATIC_DIR = os.path.join(
+    BASE_DIR,
+    "static"
+)
+
+
+# =========================================================
+# Flask
+# =========================================================
 
 app = Flask(
     __name__,
-    template_folder=os.path.join(BASE_DIR, "templates"),
-    static_folder=os.path.join(BASE_DIR, "static"),
+    template_folder=TEMPLATE_DIR,
+    static_folder=STATIC_DIR,
     static_url_path="/static"
 )
 
@@ -24,10 +44,11 @@ app = Flask(
 # データベース
 # =========================================================
 
-DATABASE = "/tmp/parent_sunscreen_survey.db"
+DATABASE = "/tmp/childhood_sunscreen_survey.db"
 
 
 def get_db():
+
     conn = sqlite3.connect(DATABASE)
 
     conn.execute("""
@@ -42,6 +63,7 @@ def get_db():
             childhood_timing_other TEXT,
 
             childhood_dislike TEXT,
+
             dislike_reason TEXT,
             dislike_reason_other TEXT,
 
@@ -63,7 +85,10 @@ def get_db():
 
 @app.route("/")
 def index():
-    return render_template("index2.html")
+
+    return render_template(
+        "index2.html"
+    )
 
 
 # =========================================================
@@ -77,7 +102,10 @@ def submit():
     # Q1
     # -----------------------------------------------------
 
-    age = request.form.get("age", "")
+    age = request.form.get(
+        "age",
+        ""
+    )
 
 
     # -----------------------------------------------------
@@ -109,12 +137,17 @@ def submit():
         childhood_timing == "その他"
         and childhood_timing_other.strip()
     ):
+
         childhood_timing_text = (
             "その他: "
             + childhood_timing_other.strip()
         )
+
     else:
-        childhood_timing_text = childhood_timing
+
+        childhood_timing_text = (
+            childhood_timing
+        )
 
 
     # -----------------------------------------------------
@@ -144,16 +177,21 @@ def submit():
         dislike_reason
     )
 
+
     if (
         "その他" in dislike_reason
         and dislike_reason_other.strip()
     ):
+
         if dislike_reason_text:
+
             dislike_reason_text += (
                 ", その他: "
                 + dislike_reason_other.strip()
             )
+
         else:
+
             dislike_reason_text = (
                 "その他: "
                 + dislike_reason_other.strip()
@@ -200,7 +238,7 @@ def submit():
 
 
     # -----------------------------------------------------
-    # データベース保存
+    # DB保存
     # -----------------------------------------------------
 
     conn = get_db()
@@ -238,12 +276,9 @@ def submit():
     )
 
     conn.commit()
+
     conn.close()
 
-
-    # -----------------------------------------------------
-    # 完了ページ
-    # -----------------------------------------------------
 
     return redirect(
         url_for("thanks")
@@ -251,11 +286,12 @@ def submit():
 
 
 # =========================================================
-# ありがとうページ
+# 完了ページ
 # =========================================================
 
 @app.route("/thanks")
 def thanks():
+
     return render_template(
         "thanks2.html"
     )
@@ -269,6 +305,7 @@ def thanks():
 def download_csv():
 
     if not os.path.exists(DATABASE):
+
         return (
             "まだ回答データがありません。",
             200
@@ -302,10 +339,6 @@ def download_csv():
     conn.close()
 
 
-    # -----------------------------------------------------
-    # CSV作成
-    # -----------------------------------------------------
-
     output = io.StringIO(
         newline=""
     )
@@ -320,7 +353,7 @@ def download_csv():
         "子どものころ日焼け止めを使っていたか",
         "子どものころ使っていたタイミング",
         "タイミング・その他",
-        "子どものころ日焼け止めを嫌がったか",
+        "子どものころ日焼け止めを塗るのが好きだったか",
         "嫌だった理由",
         "嫌だった理由・その他",
         "現在の日焼け止め使用状況",
@@ -340,11 +373,12 @@ def download_csv():
         mimetype="text/csv"
     )
 
+
     response.headers[
         "Content-Disposition"
     ] = (
         "attachment; "
-        "filename=childhood_current_sunscreen_survey.csv"
+        "filename=childhood_sunscreen_survey.csv"
     )
 
 
@@ -352,10 +386,11 @@ def download_csv():
 
 
 # =========================================================
-# ローカル実行
+# Vercel / Flask
 # =========================================================
 
 if __name__ == "__main__":
+
     app.run(
         debug=True
     )
