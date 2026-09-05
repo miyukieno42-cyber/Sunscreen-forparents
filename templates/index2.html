@@ -1,459 +1,667 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>お子さんの日焼け止めに関するアンケート</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <link rel="stylesheet" href="/style2.css">
-    <style>
-    .question {
-        display: none !important;
-    }
+    <title>こどものころと現在の日焼け止めアンケート</title>
 
-    .question.active {
-        display: block !important;
-    }
-</style>
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style2.css') }}"
+    >
+
 </head>
+
 
 <body>
 
 <main class="survey-card">
 
+    <!-- =========================
+         ヘッダー
+    ========================== -->
+
     <header class="header">
-        <div class="sun">🧴</div>
+
+        <div class="bottle">🧴</div>
 
         <h1>
-            お子さんの日焼け止めに<br>
-            関するアンケート
+            こどものころと現在の<br>
+            日焼け止めアンケート
         </h1>
 
         <p>
-            現在子育て中の方も、<br>
-            子育てを終えた方も、<br>
-            ぜひお気軽にお答えください。
+            子どものころを思い出しながら<br>
+            気軽に答えてください
         </p>
+
     </header>
 
+
+    <!-- =========================
+         プログレス
+    ========================== -->
 
     <div class="progress-area">
 
         <div class="progress-text">
-            <span id="currentQuestion">1</span>
+
+            <span id="currentQuestion">
+                1
+            </span>
+
             /
-            <span id="totalQuestions">9</span>
+
+            <span id="totalQuestions">
+                8
+            </span>
+
         </div>
 
         <div class="progress-bar">
-            <div id="progress" class="progress"></div>
+
+            <div
+                id="progress"
+                class="progress"
+            ></div>
+
         </div>
 
     </div>
 
 
-    <form id="surveyForm" method="POST" action="/submit">
+    <!-- =========================
+         フォーム
+    ========================== -->
+
+    <form
+        id="surveyForm"
+        method="POST"
+        action="{{ url_for('submit') }}"
+    >
 
 
-        <!-- Q1 -->
-        <section class="question active" data-question="1">
+        <!-- =================================================
+             Q1
+        ================================================== -->
+
+        <section
+            class="question active"
+            data-question="1"
+        >
 
             <div class="question-label">
                 Question 1
             </div>
 
             <h2>
-                お子さんの年齢を<br>
+                あなたの年代を<br>
                 教えてください
             </h2>
 
             <p class="hint">
-                複数のお子さんがいる場合は、当てはまるものをすべて選んでください。
+                ひとつ選んでください
             </p>
+
 
             <div class="options">
 
                 <label class="option">
-                    <input
-                        type="checkbox"
-                        name="child_age"
-                        value="0歳"
-                    >
-                    <span>0歳</span>
-                </label>
 
-                <label class="option">
                     <input
-                        type="checkbox"
-                        name="child_age"
-                        value="1〜3歳"
-                    >
-                    <span>1〜3歳</span>
-                </label>
-
-                <label class="option">
-                    <input
-                        type="checkbox"
-                        name="child_age"
-                        value="幼稚園・保育園"
-                    >
-                    <span>幼稚園・保育園</span>
-                </label>
-
-                <label class="option">
-                    <input
-                        type="checkbox"
-                        name="child_age"
-                        value="小学生"
-                    >
-                    <span>小学生</span>
-                </label>
-
-                <label class="option">
-                    <input
-                        type="checkbox"
-                        name="child_age"
-                        value="中高生"
-                    >
-                    <span>中高生</span>
-                </label>
-
-                <label class="option">
-                    <input
-                        type="checkbox"
-                        name="child_age"
+                        type="radio"
+                        name="age"
                         value="10代"
+                        required
                     >
+
                     <span>10代</span>
+
                 </label>
 
+
                 <label class="option">
+
                     <input
-                        type="checkbox"
-                        name="child_age"
-                        value="20代"
+                        type="radio"
+                        name="age"
+                        value="20代前半"
                     >
-                    <span>20代</span>
+
+                    <span>20代前半</span>
+
                 </label>
 
+
                 <label class="option">
+
                     <input
-                        type="checkbox"
-                        name="child_age"
+                        type="radio"
+                        name="age"
+                        value="20代後半"
+                    >
+
+                    <span>20代後半</span>
+
+                </label>
+
+
+                <label class="option">
+
+                    <input
+                        type="radio"
+                        name="age"
                         value="30代"
                     >
+
                     <span>30代</span>
+
+                </label>
+
+
+                <label class="option">
+
+                    <input
+                        type="radio"
+                        name="age"
+                        value="40代"
+                    >
+
+                    <span>40代</span>
+
+                </label>
+
+
+                <label class="option">
+
+                    <input
+                        type="radio"
+                        name="age"
+                        value="50代以上"
+                    >
+
+                    <span>50代以上</span>
+
+                </label>
+
+
+                <label class="option">
+
+                    <input
+                        type="radio"
+                        name="age"
+                        value="その他"
+                    >
+
+                    <span>その他</span>
+
                 </label>
 
             </div>
 
-            <button type="button" class="back-button">
+
+            <button
+                type="button"
+                class="back-button"
+            >
                 ← 戻る
             </button>
 
-            <button type="button" class="next-button">
+
+            <button
+                type="button"
+                class="next-button"
+            >
                 次へ →
             </button>
 
         </section>
 
 
-        <!-- Q2 -->
-        <section class="question" data-question="2">
+
+        <!-- =================================================
+             Q2
+        ================================================== -->
+
+        <section
+            class="question"
+            data-question="2"
+        >
 
             <div class="question-label">
                 Question 2
             </div>
 
             <h2>
-                お子さんに日焼け止めを<br>
-                使っていますか？
+                子どものころ、<br>
+                日焼け止めを使っていましたか？
             </h2>
 
             <p class="hint">
-                現在子育て中の方は「今」、子育てを終えた方は「子育て中」を思い出してお答えください。
+                小学生〜中高生くらいのころを思い出してお答えください。
             </p>
+
 
             <div class="options">
 
                 <label class="option">
+
                     <input
                         type="radio"
-                        name="sunscreen_use"
-                        value="はい"
+                        name="childhood_use"
+                        value="よく使っていた"
                         required
                     >
-                    <span>はい</span>
+
+                    <span>よく使っていた</span>
+
                 </label>
 
-                <label class="option">
-                    <input
-                        type="radio"
-                        name="sunscreen_use"
-                        value="いいえ"
-                    >
-                    <span>いいえ</span>
-                </label>
 
                 <label class="option">
+
                     <input
                         type="radio"
-                        name="sunscreen_use"
-                        value="時々・行事などのとき"
+                        name="childhood_use"
+                        value="たまに使っていた"
                     >
-                    <span>時々・行事などのとき</span>
+
+                    <span>たまに使っていた</span>
+
+                </label>
+
+
+                <label class="option">
+
+                    <input
+                        type="radio"
+                        name="childhood_use"
+                        value="ほとんど使っていなかった"
+                    >
+
+                    <span>ほとんど使っていなかった</span>
+
+                </label>
+
+
+                <label class="option">
+
+                    <input
+                        type="radio"
+                        name="childhood_use"
+                        value="覚えていない"
+                    >
+
+                    <span>覚えていない</span>
+
                 </label>
 
             </div>
 
-            <button type="button" class="back-button">
+
+            <button
+                type="button"
+                class="back-button"
+            >
                 ← 戻る
             </button>
 
-            <button type="button" class="next-button">
+
+            <button
+                type="button"
+                class="next-button"
+            >
                 次へ →
             </button>
 
         </section>
 
 
-        <!-- Q3 -->
-        <section class="question" data-question="3">
+
+        <!-- =================================================
+             Q3
+        ================================================== -->
+
+        <section
+            class="question"
+            data-question="3"
+        >
 
             <div class="question-label">
                 Question 3
             </div>
 
             <h2>
-                お子さんに日焼け止めを<br>
-                いつ使っていますか？
+                子どものころ、<br>
+                日焼け止めを使っていたのはどんなとき？
             </h2>
 
             <p class="hint">
-                複数のお子さんがいる場合は、代表的な使い方をお答えください。
+                近いものをひとつ選んでください。
             </p>
+
 
             <div class="options">
 
                 <label class="option">
+
                     <input
                         type="radio"
-                        name="use_timing"
-                        value="外出時"
+                        name="childhood_timing"
+                        value="夏の外出"
                         required
                     >
-                    <span>外出するとき</span>
+
+                    <span>夏に外出するとき</span>
+
                 </label>
 
+
                 <label class="option">
+
                     <input
                         type="radio"
-                        name="use_timing"
-                        value="常に"
+                        name="childhood_timing"
+                        value="海・プール"
                     >
-                    <span>日常的に・ほぼ毎日</span>
+
+                    <span>海・プールに行くとき</span>
+
                 </label>
 
+
                 <label class="option">
+
                     <input
                         type="radio"
-                        name="use_timing"
+                        name="childhood_timing"
+                        value="運動・部活動"
+                    >
+
+                    <span>運動・部活動のとき</span>
+
+                </label>
+
+
+                <label class="option">
+
+                    <input
+                        type="radio"
+                        name="childhood_timing"
+                        value="ほぼ毎日"
+                    >
+
+                    <span>ほぼ毎日</span>
+
+                </label>
+
+
+                <label class="option">
+
+                    <input
+                        type="radio"
+                        name="childhood_timing"
                         value="その他"
                         id="useTimingOther"
                     >
+
                     <span>その他</span>
+
                 </label>
+
 
                 <input
                     type="text"
-                    name="use_timing_other"
+                    name="childhood_timing_other"
                     id="useTimingOtherText"
                     class="text-input"
-                    placeholder="どんなときに使っていますか？"
-                    style="display: none;"
+                    placeholder="どんなときに使っていましたか？"
                 >
 
             </div>
 
-            <button type="button" class="back-button">
+
+            <button
+                type="button"
+                class="back-button"
+            >
                 ← 戻る
             </button>
 
-            <button type="button" class="next-button">
+
+            <button
+                type="button"
+                class="next-button"
+            >
                 次へ →
             </button>
 
         </section>
 
 
-        <!-- Q4 -->
-        <section class="question" data-question="4">
+
+        <!-- =================================================
+             Q4
+        ================================================== -->
+
+        <section
+            class="question"
+            data-question="4"
+        >
 
             <div class="question-label">
                 Question 4
             </div>
 
             <h2>
-                日焼け止めを塗ることを<br>
-                お子さんが嫌がることはありますか？
+                子どものころ、<br>
+                日焼け止めを塗るのは好きでしたか？
             </h2>
 
             <p class="hint">
-                現在子育て中の方は「今」、子育てを終えた方は「子育て中」を思い出してお答えください。
+                当時のことを思い出してお答えください。
             </p>
+
 
             <div class="options">
 
                 <label class="option">
+
                     <input
                         type="radio"
-                        name="child_dislike"
-                        value="あった"
+                        name="childhood_dislike"
+                        value="好きだった"
                         required
                     >
-                    <span>あった</span>
+
+                    <span>好きだった</span>
+
                 </label>
 
-                <label class="option">
-                    <input
-                        type="radio"
-                        name="child_dislike"
-                        value="時々あった"
-                    >
-                    <span>時々あった</span>
-                </label>
 
                 <label class="option">
+
                     <input
                         type="radio"
-                        name="child_dislike"
-                        value="常に"
+                        name="childhood_dislike"
+                        value="どちらでもない"
                     >
-                    <span>いつも嫌がっていた</span>
+
+                    <span>どちらでもない</span>
+
                 </label>
 
+
                 <label class="option">
+
                     <input
                         type="radio"
-                        name="child_dislike"
-                        value="なかった"
+                        name="childhood_dislike"
+                        value="少し嫌だった"
                     >
-                    <span>特になかった</span>
+
+                    <span>少し嫌だった</span>
+
+                </label>
+
+
+                <label class="option">
+
+                    <input
+                        type="radio"
+                        name="childhood_dislike"
+                        value="かなり嫌だった"
+                    >
+
+                    <span>かなり嫌だった</span>
+
+                </label>
+
+
+                <label class="option">
+
+                    <input
+                        type="radio"
+                        name="childhood_dislike"
+                        value="覚えていない"
+                    >
+
+                    <span>覚えていない</span>
+
                 </label>
 
             </div>
 
-            <button type="button" class="back-button">
+
+            <button
+                type="button"
+                class="back-button"
+            >
                 ← 戻る
             </button>
 
-            <button type="button" class="next-button">
+
+            <button
+                type="button"
+                class="next-button"
+            >
                 次へ →
             </button>
 
         </section>
 
 
-        <!-- Q5 -->
-        <section class="question" data-question="5">
+
+        <!-- =================================================
+             Q5
+        ================================================== -->
+
+        <section
+            class="question"
+            data-question="5"
+        >
 
             <div class="question-label">
                 Question 5
             </div>
 
             <h2>
-                お子さんが日焼け止めを<br>
-                嫌がる理由は何ですか？
+                日焼け止めのどんなところが<br>
+                嫌でしたか？
             </h2>
 
             <p class="hint">
                 当てはまるものをすべて選んでください。
             </p>
 
+
             <div class="options">
 
                 <label class="option">
+
                     <input
                         type="checkbox"
                         name="dislike_reason"
                         value="ベタベタする"
                     >
+
                     <span>ベタベタする</span>
+
                 </label>
 
-                <label class="option">
-                    <input
-                        type="checkbox"
-                        name="dislike_reason"
-                        value="塗るのが面倒"
-                    >
-                    <span>塗るのが面倒</span>
-                </label>
 
                 <label class="option">
+
                     <input
                         type="checkbox"
                         name="dislike_reason"
                         value="におい"
                     >
+
                     <span>においが気になる</span>
+
                 </label>
 
+
                 <label class="option">
+
+                    <input
+                        type="checkbox"
+                        name="dislike_reason"
+                        value="白くなる"
+                    >
+
+                    <span>白くなる</span>
+
+                </label>
+
+
+                <label class="option">
+
+                    <input
+                        type="checkbox"
+                        name="dislike_reason"
+                        value="塗るのが面倒"
+                    >
+
+                    <span>塗るのが面倒</span>
+
+                </label>
+
+
+                <label class="option">
+
                     <input
                         type="checkbox"
                         name="dislike_reason"
                         value="冷たい"
                     >
+
                     <span>塗るときに冷たい</span>
+
                 </label>
 
-                <label class="option">
-                    <input
-                        type="checkbox"
-                        name="dislike_reason"
-                        value="時間がかかる"
-                    >
-                    <span>塗るのに時間がかかる</span>
-                </label>
 
                 <label class="option">
-                    <input
-                        type="checkbox"
-                        name="dislike_reason"
-                        value="服や髪につく"
-                    >
-                    <span>服や髪につく</span>
-                </label>
 
-                <label class="option">
-                    <input
-                        type="checkbox"
-                        name="dislike_reason"
-                        value="自分で塗れない"
-                    >
-                    <span>自分でうまく塗れない</span>
-                </label>
-
-                <label class="option">
-                    <input
-                        type="checkbox"
-                        name="dislike_reason"
-                        value="必要性を理解していない"
-                    >
-                    <span>必要性を理解していない</span>
-                </label>
-
-                <label class="option">
                     <input
                         type="checkbox"
                         name="dislike_reason"
                         value="その他"
                         id="dislikeReasonOther"
                     >
+
                     <span>その他</span>
+
                 </label>
+
 
                 <input
                     type="text"
@@ -461,166 +669,220 @@
                     id="dislikeReasonOtherText"
                     class="text-input"
                     placeholder="その他の理由を入力してください"
-                    style="display: none;"
                 >
 
             </div>
 
-            <button type="button" class="back-button">
+
+            <button
+                type="button"
+                class="back-button"
+            >
                 ← 戻る
             </button>
 
-            <button type="button" class="next-button">
+
+            <button
+                type="button"
+                class="next-button"
+            >
                 次へ →
             </button>
 
         </section>
 
 
-        <!-- Q6 -->
-        <section class="question" data-question="6">
+
+        <!-- =================================================
+             Q6
+        ================================================== -->
+
+        <section
+            class="question"
+            data-question="6"
+        >
 
             <div class="question-label">
                 Question 6
             </div>
 
             <h2>
-                お子さんに日焼け止めを塗るとき、<br>
-                親として困っていることはありますか？
+                では現在、<br>
+                日焼け止めを使っていますか？
             </h2>
 
             <p class="hint">
-                現在子育て中の方も、過去の経験でも構いません。自由にお答えください。
+                現在の日焼け止めの使用状況を教えてください。
             </p>
 
-            <textarea
-                name="parent_problem"
-                class="textarea"
-                placeholder="例：嫌がって逃げてしまう、時間がない、顔に塗りにくい、など"
-            ></textarea>
 
-            <button type="button" class="back-button">
+            <div class="options">
+
+                <label class="option">
+
+                    <input
+                        type="radio"
+                        name="current_use"
+                        value="よく使う"
+                        required
+                    >
+
+                    <span>よく使う</span>
+
+                </label>
+
+
+                <label class="option">
+
+                    <input
+                        type="radio"
+                        name="current_use"
+                        value="たまに使う"
+                    >
+
+                    <span>たまに使う</span>
+
+                </label>
+
+
+                <label class="option">
+
+                    <input
+                        type="radio"
+                        name="current_use"
+                        value="ほとんど使わない"
+                    >
+
+                    <span>ほとんど使わない</span>
+
+                </label>
+
+
+                <label class="option">
+
+                    <input
+                        type="radio"
+                        name="current_use"
+                        value="使わない"
+                    >
+
+                    <span>使わない</span>
+
+                </label>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="back-button"
+            >
                 ← 戻る
             </button>
 
-            <button type="button" class="next-button">
+
+            <button
+                type="button"
+                class="next-button"
+            >
                 次へ →
             </button>
 
         </section>
 
 
-        <!-- Q7 -->
-        <section class="question" data-question="7">
+
+        <!-- =================================================
+             Q7
+        ================================================== -->
+
+        <section
+            class="question"
+            data-question="7"
+        >
 
             <div class="question-label">
                 Question 7
             </div>
 
             <h2>
-                嫌がるお子さんに、<br>
-                どのように日焼け止めを塗っていますか？
+                今、日焼け止めを使うときに<br>
+                困っていることはありますか？
             </h2>
 
             <p class="hint">
-                「こうすると塗りやすい」「こんな工夫をしていた」など、自由に教えてください。
+                小さなことでも大丈夫です。自由に教えてください。
             </p>
 
+
             <textarea
-                name="how_to_apply"
+                name="current_problem"
                 class="textarea"
-                placeholder="例：遊んでいる間に塗る、好きな香りを選ばせる、親子で一緒に塗る、など"
+                placeholder="例：塗るのが面倒、服につく、肌になじみにくい、持ち歩きにくい、など"
             ></textarea>
 
-            <button type="button" class="back-button">
+
+            <button
+                type="button"
+                class="back-button"
+            >
                 ← 戻る
             </button>
 
-            <button type="button" class="next-button">
+
+            <button
+                type="button"
+                class="next-button"
+            >
                 次へ →
             </button>
 
         </section>
 
 
-        <!-- Q8 -->
-        <section class="question" data-question="8">
+
+        <!-- =================================================
+             Q8
+        ================================================== -->
+
+        <section
+            class="question"
+            data-question="8"
+        >
 
             <div class="question-label">
                 Question 8
             </div>
 
             <h2>
-                「子どもが自分から<br>
-                塗りたくなる日焼け止め」があったら、<br>
-                使ってみたいですか？
+                「こんな日焼け止めなら<br>
+                使ってみたい！」と思うものは？
             </h2>
 
             <p class="hint">
-                お子さんが楽しみながら使えるような日焼け止めを想像してお答えください。
+                子どものころの自分や、今の自分を思い浮かべて自由に教えてください。
             </p>
 
-            <div class="options">
-
-                <label class="option">
-                    <input
-                        type="radio"
-                        name="want_self_apply"
-                        value="はい"
-                        required
-                    >
-                    <span>はい</span>
-                </label>
-
-                <label class="option">
-                    <input
-                        type="radio"
-                        name="want_self_apply"
-                        value="いいえ"
-                    >
-                    <span>いいえ</span>
-                </label>
-
-            </div>
-
-            <button type="button" class="back-button">
-                ← 戻る
-            </button>
-
-            <button type="button" class="next-button">
-                次へ →
-            </button>
-
-        </section>
-
-
-        <!-- Q9 -->
-        <section class="question" data-question="9">
-
-            <div class="question-label">
-                Question 9
-            </div>
-
-            <h2>
-                どんな工夫があったら、<br>
-                お子さんが喜んで使ってくれそうですか？
-            </h2>
-
-            <p class="hint">
-                「こんな形なら楽しそう」「こんな仕組みがあったらいい」など、自由なアイデアを教えてください。
-            </p>
 
             <textarea
-                name="child_idea"
+                name="ideal_sunscreen"
                 class="textarea"
-                placeholder="例：好きなキャラクター、塗ると色が変わる、スタンプのように使える、など"
+                placeholder="例：好きな香り、塗ると楽しい、手を汚さず使える、見た目がかわいい、など"
             ></textarea>
 
-            <button type="button" class="back-button">
+
+            <button
+                type="button"
+                class="back-button"
+            >
                 ← 戻る
             </button>
 
-            <button type="submit" class="submit-button">
+
+            <button
+                type="submit"
+                class="submit-button"
+            >
                 回答を送信する 💌
             </button>
 
@@ -632,6 +894,10 @@
 </main>
 
 
-<script src="/app2.js"></script>
+<script
+    src="{{ url_for('static', filename='app2.js') }}"
+></script>
+
 </body>
+
 </html>
