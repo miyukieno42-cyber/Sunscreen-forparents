@@ -1,61 +1,39 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function () {
 
-    const questions =
-        document.querySelectorAll(".question");
+    const questions = Array.from(
+        document.querySelectorAll(".question")
+    );
 
-    const totalQuestions =
-        questions.length;
+    const totalQuestions = questions.length;
 
-    let currentQuestion = 0;
-
-
-    /* =====================================================
-       プログレス更新
-    ===================================================== */
-
-    function updateProgress() {
-
-        const current =
-            currentQuestion + 1;
-
-        const currentQuestionElement =
-            document.getElementById("currentQuestion");
-
-        const totalQuestionElement =
-            document.getElementById("totalQuestions");
-
-        const progressElement =
-            document.getElementById("progress");
+    let currentIndex = 0;
 
 
-        if (currentQuestionElement) {
-            currentQuestionElement.textContent =
-                current;
-        }
+    const currentQuestion = document.getElementById(
+        "currentQuestion"
+    );
 
-        if (totalQuestionElement) {
-            totalQuestionElement.textContent =
-                totalQuestions;
-        }
+    const totalQuestion = document.getElementById(
+        "totalQuestions"
+    );
 
-        if (progressElement) {
+    const progress = document.getElementById(
+        "progress"
+    );
 
-            const percentage =
-                (current / totalQuestions) * 100;
 
-            progressElement.style.width =
-                percentage + "%";
-        }
+    if (totalQuestion) {
+        totalQuestion.textContent = totalQuestions;
     }
 
 
-    /* =====================================================
-       質問表示
-    ===================================================== */
+    // =====================================================
+    // 質問表示
+    // =====================================================
 
     function showQuestion(index) {
 
-        questions.forEach((question, i) => {
+        questions.forEach(function (question, i) {
 
             question.classList.toggle(
                 "active",
@@ -65,163 +43,139 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
 
-        updateProgress();
+        if (currentQuestion) {
+
+            currentQuestion.textContent =
+                index + 1;
+
+        }
+
+
+        if (progress) {
+
+            const percentage =
+                ((index + 1) / totalQuestions) * 100;
+
+            progress.style.width =
+                percentage + "%";
+
+        }
 
 
         window.scrollTo({
             top: 0,
             behavior: "smooth"
         });
+
     }
 
 
-    /* =====================================================
-       現在の質問の必須項目チェック
-    ===================================================== */
+    // =====================================================
+    // 必須チェック
+    // =====================================================
 
-    function validateCurrentQuestion() {
-
-        const current =
-            questions[currentQuestion];
-
-
-        if (!current) {
-            return true;
-        }
-
-
-        /* -------------------------------------------------
-           required
-        ------------------------------------------------- */
+    function validateQuestion(question) {
 
         const requiredInputs =
-            current.querySelectorAll(
-                "input[required]"
+            question.querySelectorAll(
+                "input[required], textarea[required], select[required]"
             );
+
+
+        if (requiredInputs.length === 0) {
+
+            return true;
+
+        }
 
 
         for (const input of requiredInputs) {
 
-            if (!input.checkValidity()) {
-
-                input.reportValidity();
-
-                return false;
-            }
-        }
-
-
-        /* -------------------------------------------------
-           Q3「その他」
-        ------------------------------------------------- */
-
-        if (
-            current.dataset.question === "3"
-        ) {
-
-            const other =
-                document.getElementById(
-                    "useTimingOther"
-                );
-
-            const otherText =
-                document.getElementById(
-                    "useTimingOtherText"
-                );
-
-
             if (
-                other &&
-                other.checked &&
-                otherText &&
-                otherText.value.trim() === ""
+                input.type === "radio" ||
+                input.type === "checkbox"
             ) {
 
-                alert(
-                    "「その他」の内容を入力してください。"
-                );
+                const name =
+                    input.name;
 
-                otherText.focus();
+                const checked =
+                    question.querySelector(
+                        `input[name="${name}"]:checked`
+                    );
 
-                return false;
+                if (!checked) {
+
+                    alert(
+                        "回答を選択してください。"
+                    );
+
+                    return false;
+
+                }
+
+            } else {
+
+                if (!input.value.trim()) {
+
+                    alert(
+                        "回答を入力してください。"
+                    );
+
+                    input.focus();
+
+                    return false;
+
+                }
+
             }
-        }
 
-
-        /* -------------------------------------------------
-           Q5「その他」
-        ------------------------------------------------- */
-
-        if (
-            current.dataset.question === "5"
-        ) {
-
-            const other =
-                document.getElementById(
-                    "dislikeReasonOther"
-                );
-
-            const otherText =
-                document.getElementById(
-                    "dislikeReasonOtherText"
-                );
-
-
-            if (
-                other &&
-                other.checked &&
-                otherText &&
-                otherText.value.trim() === ""
-            ) {
-
-                alert(
-                    "「その他」の理由を入力してください。"
-                );
-
-                otherText.focus();
-
-                return false;
-            }
         }
 
 
         return true;
+
     }
 
 
-    /* =====================================================
-       次へ
-    ===================================================== */
+    // =====================================================
+    // 次へ
+    // =====================================================
 
-    const nextButtons =
-        document.querySelectorAll(
-            ".next-button"
-        );
-
-
-    nextButtons.forEach((button) => {
+    document.querySelectorAll(
+        ".next-button"
+    ).forEach(function (button) {
 
         button.addEventListener(
             "click",
-            () => {
+            function () {
+
+                const currentQuestionElement =
+                    questions[currentIndex];
+
 
                 if (
-                    !validateCurrentQuestion()
+                    !validateQuestion(
+                        currentQuestionElement
+                    )
                 ) {
+
                     return;
+
                 }
 
 
                 if (
-                    currentQuestion <
-                    totalQuestions - 1
+                    currentIndex <
+                    questions.length - 1
                 ) {
 
-                    currentQuestion++;
+                    currentIndex++;
 
                     showQuestion(
-                        currentQuestion
+                        currentIndex
                     );
+
                 }
 
             }
@@ -230,31 +184,26 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    /* =====================================================
-       戻る
-    ===================================================== */
+    // =====================================================
+    // 戻る
+    // =====================================================
 
-    const backButtons =
-        document.querySelectorAll(
-            ".back-button"
-        );
-
-
-    backButtons.forEach((button) => {
+    document.querySelectorAll(
+        ".back-button"
+    ).forEach(function (button) {
 
         button.addEventListener(
             "click",
-            () => {
+            function () {
 
-                if (
-                    currentQuestion > 0
-                ) {
+                if (currentIndex > 0) {
 
-                    currentQuestion--;
+                    currentIndex--;
 
                     showQuestion(
-                        currentQuestion
+                        currentIndex
                     );
+
                 }
 
             }
@@ -263,9 +212,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    /* =====================================================
-       Q3「その他」
-    ===================================================== */
+    // =====================================================
+    // Q3「その他」
+    // =====================================================
 
     const useTimingOther =
         document.getElementById(
@@ -283,68 +232,44 @@ document.addEventListener("DOMContentLoaded", () => {
         useTimingOtherText
     ) {
 
-        useTimingOtherText.style.display =
-            "none";
+        document
+            .querySelectorAll(
+                'input[name="use_timing"]'
+            )
+            .forEach(function (input) {
 
+                input.addEventListener(
+                    "change",
+                    function () {
 
-        useTimingOther.addEventListener(
-            "change",
-            function () {
+                        if (
+                            useTimingOther.checked
+                        ) {
 
-                if (this.checked) {
+                            useTimingOtherText.style.display =
+                                "block";
 
-                    useTimingOtherText.style.display =
-                        "block";
+                        } else {
 
-                    useTimingOtherText.focus();
+                            useTimingOtherText.style.display =
+                                "none";
 
-                } else {
+                            useTimingOtherText.value =
+                                "";
 
-                    useTimingOtherText.style.display =
-                        "none";
+                        }
 
-                    useTimingOtherText.value =
-                        "";
-                }
-
-            }
-        );
-
-
-        const timingRadios =
-            document.querySelectorAll(
-                'input[name="childhood_timing"]'
-            );
-
-
-        timingRadios.forEach((radio) => {
-
-            radio.addEventListener(
-                "change",
-                function () {
-
-                    if (
-                        this.value !== "その他"
-                    ) {
-
-                        useTimingOtherText.style.display =
-                            "none";
-
-                        useTimingOtherText.value =
-                            "";
                     }
+                );
 
-                }
-            );
-
-        });
+            });
 
     }
 
 
-    /* =====================================================
-       Q5「その他」
-    ===================================================== */
+    // =====================================================
+    // Q5「その他」
+    // =====================================================
 
     const dislikeReasonOther =
         document.getElementById(
@@ -362,20 +287,16 @@ document.addEventListener("DOMContentLoaded", () => {
         dislikeReasonOtherText
     ) {
 
-        dislikeReasonOtherText.style.display =
-            "none";
-
-
         dislikeReasonOther.addEventListener(
             "change",
             function () {
 
-                if (this.checked) {
+                if (
+                    dislikeReasonOther.checked
+                ) {
 
                     dislikeReasonOtherText.style.display =
                         "block";
-
-                    dislikeReasonOtherText.focus();
 
                 } else {
 
@@ -384,6 +305,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     dislikeReasonOtherText.value =
                         "";
+
                 }
 
             }
@@ -392,121 +314,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* =====================================================
-       フォーム送信
-    ===================================================== */
+    // =====================================================
+    // 初期表示
+    // =====================================================
 
-    const form =
-        document.getElementById(
-            "surveyForm"
-        );
-
-
-    if (form) {
-
-        form.addEventListener(
-            "submit",
-            (event) => {
-
-                if (
-                    !validateCurrentQuestion()
-                ) {
-
-                    event.preventDefault();
-
-                    return;
-                }
-
-
-                if (
-                    !form.checkValidity()
-                ) {
-
-                    event.preventDefault();
-
-                    form.reportValidity();
-
-                    return;
-                }
-
-
-                /* -----------------------------------------
-                   Q3 その他
-                ----------------------------------------- */
-
-                const timingOther =
-                    document.getElementById(
-                        "useTimingOther"
-                    );
-
-                const timingOtherText =
-                    document.getElementById(
-                        "useTimingOtherText"
-                    );
-
-
-                if (
-                    timingOther &&
-                    timingOther.checked &&
-                    timingOtherText &&
-                    timingOtherText.value.trim() === ""
-                ) {
-
-                    event.preventDefault();
-
-                    alert(
-                        "「その他」の内容を入力してください。"
-                    );
-
-                    timingOtherText.focus();
-
-                    return;
-                }
-
-
-                /* -----------------------------------------
-                   Q5 その他
-                ----------------------------------------- */
-
-                const reasonOther =
-                    document.getElementById(
-                        "dislikeReasonOther"
-                    );
-
-                const reasonOtherText =
-                    document.getElementById(
-                        "dislikeReasonOtherText"
-                    );
-
-
-                if (
-                    reasonOther &&
-                    reasonOther.checked &&
-                    reasonOtherText &&
-                    reasonOtherText.value.trim() === ""
-                ) {
-
-                    event.preventDefault();
-
-                    alert(
-                        "「その他」の理由を入力してください。"
-                    );
-
-                    reasonOtherText.focus();
-
-                    return;
-                }
-
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       最初の質問
-    ===================================================== */
-
-    showQuestion(0);
+    showQuestion(
+        currentIndex
+    );
 
 });
