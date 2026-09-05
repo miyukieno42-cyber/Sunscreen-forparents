@@ -1,3 +1,7 @@
+/* =========================================================
+   基本設定
+========================================================= */
+
 * {
     box-sizing: border-box;
 }
@@ -5,11 +9,13 @@
 html {
     margin: 0;
     padding: 0;
+    scroll-behavior: smooth;
 }
 
 body {
     margin: 0;
-    padding: 30px 20px;
+    padding: 24px;
+
     min-height: 100vh;
 
     display: flex;
@@ -27,116 +33,146 @@ body {
         sans-serif;
 
     background:
-        linear-gradient(
-            135deg,
-            #eef8f1 0%,
-            #f5fbf6 50%,
-            #e8f5ec 100%
-        );
+        radial-gradient(
+            circle at top left,
+            #eef9f1 0%,
+            transparent 38%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            #e4f3e8 0%,
+            transparent 40%
+        ),
+        #f8fcf9;
 
-    color: #405348;
+    color: #43564a;
 }
 
 
-/* =========================
-   全体カード
-========================= */
+/* =========================================================
+   アンケートカード
+========================================================= */
 
 .survey-card {
     width: 100%;
-    max-width: 900px;
+    max-width: 920px;
 
     margin: 0 auto;
 
-    padding: 55px 70px 70px;
+    padding: 52px 68px 68px;
 
     background: #ffffff;
 
-    border-radius: 38px;
+    border-radius: 36px;
 
     box-shadow:
-        0 20px 60px rgba(75, 120, 90, 0.12);
+        0 18px 55px rgba(72, 112, 83, 0.12);
 }
 
 
-/* =========================
+/* =========================================================
    ヘッダー
-========================= */
+========================================================= */
 
 .header {
     text-align: center;
-    margin-bottom: 50px;
+
+    margin-bottom: 48px;
 }
 
-.sun {
+.bottle {
+    width: 70px;
+    height: 70px;
+
+    margin: 0 auto 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     font-size: 48px;
-    margin-bottom: 15px;
+
+    background: #f1f8f3;
+
+    border-radius: 22px;
 }
 
 .header h1 {
-    margin: 0 0 22px;
+    margin: 0 0 20px;
 
-    font-size: 38px;
-    line-height: 1.55;
+    font-size: clamp(30px, 4vw, 40px);
 
-    color: #527d63;
+    line-height: 1.5;
+
+    letter-spacing: 0.02em;
+
+    color: #466b54;
+
+    font-weight: 800;
 }
 
 .header p {
     margin: 0;
 
-    font-size: 19px;
+    font-size: 18px;
+
     line-height: 1.9;
 
-    color: #789181;
+    color: #82958a;
 }
 
 
-/* =========================
+/* =========================================================
    プログレス
-========================= */
+========================================================= */
 
 .progress-area {
-    margin-bottom: 45px;
+    margin-bottom: 48px;
 }
 
 .progress-text {
-    text-align: right;
-
     margin-bottom: 10px;
 
-    font-size: 17px;
-    font-weight: bold;
+    text-align: right;
 
-    color: #789181;
+    font-size: 16px;
+
+    font-weight: 700;
+
+    color: #7d9384;
 }
 
 .progress-bar {
     width: 100%;
-    height: 10px;
-
-    background: #e2f0e6;
-
-    border-radius: 999px;
+    height: 9px;
 
     overflow: hidden;
+
+    background: #e7f1ea;
+
+    border-radius: 999px;
 }
 
 .progress {
-    height: 100%;
     width: 0%;
+    height: 100%;
 
-    background: #91c3a1;
+    background:
+        linear-gradient(
+            90deg,
+            #9bc9a7,
+            #72ad83
+        );
 
     border-radius: 999px;
 
-    transition: width 0.3s ease;
+    transition: width 0.35s ease;
 }
 
 
-/* =========================
+/* =========================================================
    質問
-========================= */
+========================================================= */
 
 .question {
     display: none;
@@ -147,301 +183,404 @@ body {
 }
 
 
-/* =========================
+/* =========================================================
    Questionラベル
-========================= */
+========================================================= */
 
 .question-label {
     display: inline-block;
 
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 
-    padding: 9px 20px;
+    padding: 9px 18px;
 
     border-radius: 999px;
 
-    background: #e5f3e9;
+    background: #e7f5eb;
 
-    color: #5d8a6b;
+    color: #629171;
 
-    font-size: 17px;
-    font-weight: bold;
+    font-size: 15px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.03em;
 }
 
 
-/* =========================
+/* =========================================================
    質問タイトル
-========================= */
+========================================================= */
 
 .question h2 {
-    margin: 0 0 25px;
+    margin: 0 0 22px;
 
     font-size: 30px;
-    line-height: 1.7;
 
-    color: #527d63;
+    line-height: 1.65;
+
+    letter-spacing: 0.01em;
+
+    color: #455b4d;
+
+    font-weight: 800;
 }
 
 
-/* =========================
-   説明
-========================= */
+/* =========================================================
+   ヒント
+========================================================= */
 
 .hint {
-    margin: 0 0 30px;
+    margin: 0 0 28px;
 
-    font-size: 17px;
+    font-size: 16px;
+
     line-height: 1.8;
 
-    color: #718177;
+    color: #829188;
 }
 
 
-/* =========================
+/* =========================================================
    選択肢
-========================= */
+========================================================= */
 
 .options {
     display: flex;
+
     flex-direction: column;
 
-    gap: 14px;
+    gap: 13px;
 
-    margin-bottom: 35px;
+    margin-bottom: 32px;
 }
 
 .option {
+    position: relative;
+
     display: flex;
+
     align-items: center;
 
     gap: 15px;
 
-    padding: 19px 22px;
+    width: 100%;
 
-    border-radius: 18px;
+    padding: 19px 21px;
 
-    background: #f3faf5;
+    border: 2px solid #e4eee7;
 
-    border: 2px solid #e5f1e8;
+    border-radius: 17px;
+
+    background: #f7fbf8;
 
     cursor: pointer;
 
     transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        transform 0.1s ease;
+        background 0.18s ease,
+        border-color 0.18s ease,
+        transform 0.12s ease,
+        box-shadow 0.18s ease;
 }
 
 .option:hover {
-    background: #ebf7ee;
-    border-color: #c9e3d0;
+    background: #eff8f1;
+
+    border-color: #c7dfcd;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 5px 15px rgba(74, 115, 84, 0.07);
 }
 
 .option:has(input:checked) {
-    background: #dff1e4;
-    border-color: #91c3a1;
+    background: #e1f1e5;
+
+    border-color: #82b58f;
+
+    box-shadow:
+        0 5px 16px rgba(74, 115, 84, 0.08);
 }
 
 .option input {
     width: 21px;
     height: 21px;
 
+    margin: 0;
+
     flex-shrink: 0;
 
-    accent-color: #78ad89;
+    accent-color: #70a87e;
+
+    cursor: pointer;
 }
 
 .option span {
     font-size: 18px;
+
     line-height: 1.5;
 
-    color: #405348;
+    color: #45564b;
+
+    font-weight: 500;
 }
 
 
-/* =========================
-   自由記述
-========================= */
+/* =========================================================
+   テキスト入力
+========================================================= */
 
 .text-input {
     width: 100%;
 
+    margin-top: 2px;
+
     padding: 15px 17px;
 
-    margin-top: -5px;
-    margin-bottom: 20px;
+    border: 2px solid #dce9df;
 
-    border: 2px solid #dcebe0;
-
-    border-radius: 16px;
-
-    font-size: 17px;
-    font-family: inherit;
+    border-radius: 15px;
 
     outline: none;
 
     background: #fbfefc;
+
+    color: #43564a;
+
+    font-size: 16px;
+
+    font-family: inherit;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .text-input:focus {
-    border-color: #91c3a1;
-    box-shadow: 0 0 0 3px rgba(145, 195, 161, 0.15);
+    border-color: #8cbd98;
+
+    box-shadow:
+        0 0 0 4px rgba(140, 189, 152, 0.14);
 }
+
+.text-input::placeholder {
+    color: #a4b2a9;
+}
+
+
+/* =========================================================
+   テキストエリア
+========================================================= */
 
 .textarea {
     width: 100%;
 
-    min-height: 180px;
-
-    padding: 17px;
+    min-height: 190px;
 
     margin-bottom: 30px;
 
-    border: 2px solid #dcebe0;
+    padding: 17px;
+
+    border: 2px solid #dce9df;
 
     border-radius: 17px;
 
-    font-size: 17px;
-    line-height: 1.7;
-
-    font-family: inherit;
+    outline: none;
 
     resize: vertical;
 
-    outline: none;
-
     background: #fbfefc;
+
+    color: #43564a;
+
+    font-size: 16px;
+
+    line-height: 1.75;
+
+    font-family: inherit;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .textarea:focus {
-    border-color: #91c3a1;
-    box-shadow: 0 0 0 3px rgba(145, 195, 161, 0.15);
+    border-color: #8cbd98;
+
+    box-shadow:
+        0 0 0 4px rgba(140, 189, 152, 0.14);
 }
 
-.text-input::placeholder,
 .textarea::placeholder {
-    color: #a5b2a9;
+    color: #a4b2a9;
 }
 
 
-/* =========================
-   ボタン
-========================= */
+/* =========================================================
+   ボタン共通
+========================================================= */
 
 .next-button,
 .submit-button,
 .back-button {
     width: 100%;
 
-    padding: 17px 20px;
+    min-height: 56px;
+
+    padding: 15px 20px;
 
     border: none;
 
-    border-radius: 18px;
+    border-radius: 17px;
 
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 17px;
+
+    font-weight: 800;
 
     font-family: inherit;
 
     cursor: pointer;
 
     transition:
-        transform 0.1s ease,
-        opacity 0.2s ease;
+        transform 0.12s ease,
+        opacity 0.2s ease,
+        background 0.2s ease;
+}
+
+.next-button:active,
+.submit-button:active,
+.back-button:active {
+    transform: scale(0.985);
 }
 
 
-/* 次へ */
+/* =========================================================
+   次へ
+========================================================= */
 
 .next-button {
-    background: #91c3a1;
-    color: white;
+    background:
+        linear-gradient(
+            135deg,
+            #9bc9a7,
+            #78b087
+        );
+
+    color: #ffffff;
+
+    box-shadow:
+        0 8px 18px rgba(91, 143, 103, 0.18);
 }
 
 .next-button:hover {
-    opacity: 0.88;
-}
-
-.next-button:active {
-    transform: scale(0.98);
+    opacity: 0.9;
 }
 
 
-/* 送信 */
+/* =========================================================
+   送信
+========================================================= */
 
 .submit-button {
-    background: #78ad89;
-    color: white;
+    background:
+        linear-gradient(
+            135deg,
+            #78b087,
+            #5e996e
+        );
+
+    color: #ffffff;
+
+    box-shadow:
+        0 8px 18px rgba(78, 132, 90, 0.2);
 }
 
 .submit-button:hover {
-    opacity: 0.88;
-}
-
-.submit-button:active {
-    transform: scale(0.98);
+    opacity: 0.9;
 }
 
 
-/* 戻る */
+/* =========================================================
+   戻る
+========================================================= */
 
 .back-button {
-    margin-bottom: 12px;
+    margin-bottom: 11px;
 
-    background: #e2efe5;
+    background: #e8f2ea;
 
-    color: #5d7565;
+    color: #66806e;
 }
 
 .back-button:hover {
-    background: #d5e8da;
-}
-
-.back-button:active {
-    transform: scale(0.98);
+    background: #dcecdf;
 }
 
 
-/* =========================
+/* =========================================================
    完了ページ
-========================= */
+========================================================= */
 
 .complete {
     text-align: center;
 }
 
+.complete h2 {
+    margin: 0;
 
-/* =========================
-   スマホ
-========================= */
+    font-size: 32px;
+
+    color: #466b54;
+}
+
+.complete p {
+    color: #7b8d82;
+}
+
+
+/* =========================================================
+   スマートフォン
+========================================================= */
 
 @media (max-width: 700px) {
 
     body {
-        padding: 12px;
+        padding: 10px;
     }
 
     .survey-card {
-        padding: 35px 22px 40px;
+        max-width: 100%;
 
-        border-radius: 26px;
-    }
+        padding: 34px 20px 38px;
 
-    .sun {
-        font-size: 42px;
+        border-radius: 27px;
     }
 
     .header {
-        margin-bottom: 35px;
+        margin-bottom: 34px;
+    }
+
+    .bottle {
+        width: 60px;
+        height: 60px;
+
+        margin-bottom: 14px;
+
+        font-size: 40px;
     }
 
     .header h1 {
         font-size: 27px;
+
+        line-height: 1.55;
     }
 
     .header p {
-        font-size: 16px;
+        font-size: 15px;
+
+        line-height: 1.8;
     }
 
     .progress-area {
@@ -450,14 +589,18 @@ body {
 
     .question h2 {
         font-size: 23px;
+
+        line-height: 1.65;
     }
 
     .hint {
-        font-size: 15px;
+        font-size: 14px;
     }
 
     .option {
         padding: 16px;
+
+        border-radius: 15px;
     }
 
     .option span {
@@ -467,6 +610,40 @@ body {
     .next-button,
     .submit-button,
     .back-button {
+        min-height: 52px;
+
         font-size: 16px;
+    }
+
+    .textarea {
+        min-height: 160px;
+    }
+}
+
+
+/* =========================================================
+   小さいスマホ
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .survey-card {
+        padding: 28px 16px 32px;
+    }
+
+    .header h1 {
+        font-size: 24px;
+    }
+
+    .question h2 {
+        font-size: 21px;
+    }
+
+    .option {
+        padding: 14px;
+    }
+
+    .option span {
+        font-size: 15px;
     }
 }
