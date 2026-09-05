@@ -1,139 +1,74 @@
+```css
+/* =========================
+   全体
+========================= */
+
 * {
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
 
 body {
     margin: 0;
-    padding: 20px;
-
-    min-height: 100vh;
-
+    padding: 0;
     font-family:
         -apple-system,
         BlinkMacSystemFont,
-        "Helvetica Neue",
         "Hiragino Kaku Gothic ProN",
+        "Hiragino Sans",
         "Yu Gothic",
         Meiryo,
         sans-serif;
 
-    background:
-        linear-gradient(
-            135deg,
-            #fff1f5,
-            #fff9e8,
-            #eaf8f2
-        );
-
-    color: #555;
+    background: #eef8f1;
+    color: #405348;
+    line-height: 1.7;
 }
 
 
 /* =========================
-   全体カード
+   ページ全体
 ========================= */
 
-.survey-card {
-    width: 100%;
-    max-width: 700px;
-
-    margin: 30px auto;
-
-    padding: 35px 30px 40px;
-
-    background: rgba(255, 255, 255, 0.94);
-
-    border-radius: 32px;
-
-    box-shadow:
-        0 15px 45px rgba(120, 100, 100, 0.12);
+.container {
+    width: min(92%, 760px);
+    margin: 0 auto;
+    padding: 30px 0 60px;
 }
 
 
 /* =========================
-   ヘッダー
+   タイトル・見出し
 ========================= */
 
-.header {
+h1 {
+    color: #527d63;
     text-align: center;
-
-    margin-bottom: 30px;
-}
-
-
-.sun {
-    font-size: 45px;
-
     margin-bottom: 10px;
 }
 
-
-.header h1 {
-    margin: 0 0 18px;
-
-    font-size: 27px;
-
-    line-height: 1.5;
-
-    color: #555;
+h2 {
+    color: #527d63;
 }
 
-
-.header p {
-    margin: 0;
-
-    font-size: 15px;
-
-    line-height: 1.8;
-
-    color: #777;
+h3 {
+    color: #5d806a;
 }
 
 
 /* =========================
-   プログレス
+   アンケートカード
 ========================= */
 
-.progress-area {
-    margin-bottom: 30px;
-}
-
-
-.progress-text {
-    text-align: center;
-
-    font-size: 14px;
-
-    color: #999;
-
-    margin-bottom: 8px;
-}
-
-
-.progress-bar {
-    width: 100%;
-
-    height: 8px;
-
-    background: #f1eeee;
-
-    border-radius: 20px;
-
-    overflow: hidden;
-}
-
-
-.progress {
-    height: 100%;
-
-    width: 0%;
-
-    background: #8fb9e8;
-
-    border-radius: 20px;
-
-    transition: width 0.3s ease;
+.survey-container,
+.survey-box,
+.question-container {
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 6px 25px rgba(80, 120, 90, 0.08);
 }
 
 
@@ -142,53 +77,8 @@ body {
 ========================= */
 
 .question {
-    display: none;
-}
-
-
-.question.active {
-    display: block;
-}
-
-
-.question-label {
-    display: inline-block;
-
-    margin-bottom: 14px;
-
-    padding: 7px 14px;
-
-    border-radius: 20px;
-
-    background: #eef5ff;
-
-    color: #6d9ed5;
-
-    font-size: 13px;
-
-    font-weight: bold;
-}
-
-
-.question h2 {
-    margin: 0 0 12px;
-
-    font-size: 24px;
-
-    line-height: 1.6;
-
-    color: #555;
-}
-
-
-.hint {
-    margin: 0 0 22px;
-
-    font-size: 14px;
-
-    line-height: 1.7;
-
-    color: #888;
+    background: #ffffff;
+    border-radius: 24px;
 }
 
 
@@ -196,142 +86,16 @@ body {
    選択肢
 ========================= */
 
-.options {
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 12px;
-
-    margin-bottom: 28px;
+.option,
+.choice,
+label {
+    transition: all 0.2s ease;
 }
 
-
-.option {
-    display: flex;
-
-    align-items: center;
-
-    gap: 12px;
-
-    padding: 15px 16px;
-
-    border-radius: 16px;
-
-    background: #f5f9ff;
-
-    border: 2px solid #edf4fc;
-
-    cursor: pointer;
-
-    transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        transform 0.1s ease;
-}
-
-
-.option:hover {
-    background: #edf5ff;
-
-    border-color: #d9e8f8;
-}
-
-
-.option:has(input:checked) {
-    background: #dfeeff;
-
-    border-color: #a9c9eb;
-}
-
-
-.option input {
-    width: 19px;
-
-    height: 19px;
-
-    flex-shrink: 0;
-
-    accent-color: #7daee1;
-}
-
-
-.option span {
-    font-size: 16px;
-
-    line-height: 1.5;
-
-    color: #555;
-}
-
-
-/* =========================
-   自由記述
-========================= */
-
-.text-input {
-    width: 100%;
-
-    padding: 14px 15px;
-
-    margin-top: -4px;
-
-    margin-bottom: 15px;
-
-    border: 2px solid #e6e6e6;
-
-    border-radius: 14px;
-
-    font-size: 15px;
-
-    font-family: inherit;
-
-    outline: none;
-
-    background: #fff;
-}
-
-
-.text-input:focus {
-    border-color: #a9c9eb;
-}
-
-
-.textarea {
-    width: 100%;
-
-    min-height: 160px;
-
-    padding: 15px;
-
-    margin-bottom: 28px;
-
-    border: 2px solid #e6e6e6;
-
-    border-radius: 16px;
-
-    font-size: 15px;
-
-    line-height: 1.7;
-
-    font-family: inherit;
-
-    resize: vertical;
-
-    outline: none;
-
-    background: #fff;
-}
-
-
-.textarea:focus {
-    border-color: #a9c9eb;
-}
-
-
-.text-input::placeholder,
-.textarea::placeholder {
-    color: #bbb;
+.option:hover,
+.choice:hover,
+label:hover {
+    background: #f0f9f3;
 }
 
 
@@ -339,65 +103,140 @@ body {
    ボタン
 ========================= */
 
+button,
 .next-button,
-.submit-button,
-.back-button {
-    width: 100%;
-
-    padding: 15px 20px;
-
-    border: none;
-
-    border-radius: 16px;
-
-    font-size: 16px;
-
-    font-weight: bold;
-
-    font-family: inherit;
-
-    cursor: pointer;
-
-    transition:
-        transform 0.1s ease,
-        opacity 0.2s ease;
-}
-
-
-.next-button {
-    background: #8fb9e8;
-
-    color: white;
-}
-
-
+.back-button,
 .submit-button {
-    background: #8fb9e8;
-
-    color: white;
+    border: none;
+    border-radius: 999px;
+    padding: 13px 28px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
 
-.back-button {
-    margin-bottom: 10px;
+/* 次へ・送信 */
 
-    background: #aaa7aa;
-
-    color: white;
+.next-button,
+.submit-button {
+    background: #8fbe9d;
+    color: #ffffff;
 }
-
 
 .next-button:hover,
-.submit-button:hover,
-.back-button:hover {
-    opacity: 0.88;
+.submit-button:hover {
+    background: #78aa88;
+    transform: translateY(-1px);
 }
 
 
-.next-button:active,
-.submit-button:active,
-.back-button:active {
-    transform: scale(0.98);
+/* 戻る */
+
+.back-button {
+    background: #e1eee5;
+    color: #5c7564;
+}
+
+.back-button:hover {
+    background: #d3e6d9;
+}
+
+
+/* =========================
+   入力欄
+========================= */
+
+input[type="text"],
+textarea {
+    width: 100%;
+    border: 1px solid #cfe2d4;
+    border-radius: 14px;
+    padding: 12px 14px;
+    font-size: 16px;
+    background: #fbfefc;
+    color: #405348;
+    outline: none;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+    border-color: #8fbe9d;
+    box-shadow: 0 0 0 3px rgba(143, 190, 157, 0.15);
+}
+
+
+/* =========================
+   プログレスバー
+========================= */
+
+.progress-container {
+    background: #dceee1;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+#progress {
+    background: #8fbe9d;
+    border-radius: 999px;
+    transition: width 0.3s ease;
+}
+
+
+/* =========================
+   ページ番号
+========================= */
+
+#currentQuestion {
+    color: #6d9a7b;
+    font-weight: bold;
+}
+
+
+/* =========================
+   その他入力欄
+========================= */
+
+#useTimingOtherText,
+#dislikeReasonOtherText {
+    border: 1px solid #cfe2d4;
+    background: #fbfefc;
+}
+
+
+/* =========================
+   チェックボックス・ラジオ
+========================= */
+
+input[type="checkbox"],
+input[type="radio"] {
+    accent-color: #78aa88;
+}
+
+
+/* =========================
+   送信完了ページ
+========================= */
+
+.thanks-container,
+.thanks-box {
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 6px 25px rgba(80, 120, 90, 0.08);
+}
+
+
+/* =========================
+   リンク
+========================= */
+
+a {
+    color: #5f9770;
+}
+
+a:hover {
+    color: #477c58;
 }
 
 
@@ -407,37 +246,22 @@ body {
 
 @media (max-width: 600px) {
 
-    body {
-        padding: 10px;
+    .container {
+        width: 94%;
+        padding-top: 20px;
     }
 
-
-    .survey-card {
-        margin: 10px auto;
-
-        padding: 28px 20px 30px;
-
-        border-radius: 24px;
+    h1 {
+        font-size: 25px;
     }
 
-
-    .header h1 {
-        font-size: 23px;
-    }
-
-
-    .question h2 {
-        font-size: 21px;
-    }
-
-
-    .option {
-        padding: 14px;
-    }
-
-
-    .option span {
+    button,
+    .next-button,
+    .back-button,
+    .submit-button {
+        padding: 12px 22px;
         font-size: 15px;
     }
 
 }
+```
