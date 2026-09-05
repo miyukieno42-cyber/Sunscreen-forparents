@@ -323,3 +323,19 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 });
+// Q6「その他」の表示・非表示
+const parentProblemOther = document.getElementById("parentProblemOther");
+const parentProblemOtherText = document.getElementById("parentProblemOtherText");
+
+if (parentProblemOther && parentProblemOtherText) {
+    parentProblemOther.addEventListener("change", function () {
+
+        if (this.checked) {
+            parentProblemOtherText.style.display = "block";
+        } else {
+            parentProblemOtherText.style.display = "none";
+            parentProblemOtherText.value = "";
+        }
+
+    });
+}
