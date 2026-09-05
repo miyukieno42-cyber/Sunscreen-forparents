@@ -39,8 +39,8 @@ app = Flask(
 # データベース
 # =========================================================
 
-# Vercelではローカルファイルへの保存は永続DBとして使えません。
-# 今回はまずアンケートを動かすことを優先した簡易保存です。
+# Vercelでは /tmp のデータは永続保存されません。
+# 今回はアンケートを動かすための簡易保存です。
 
 DATABASE = "/tmp/childhood_sunscreen_survey.db"
 
@@ -65,6 +65,8 @@ def get_db():
             dislike_reason_other TEXT,
 
             parent_problem TEXT,
+            parent_problem_other TEXT,
+
             how_to_apply TEXT,
 
             want_self_apply TEXT,
@@ -187,42 +189,44 @@ def submit():
 
 
     # -----------------------------------------------------
-　　 # Q6
-　 　# 親として困っていること
-　　 # -----------------------------------------------------
+    # Q6
+    # 親として困っていること
+    # -----------------------------------------------------
 
-　　　parent_problem = request.form.getlist(
-       "parent_problem"
-   )
+    parent_problem = request.form.getlist(
+        "parent_problem"
+    )
 
-parent_problem_other = request.form.get(
-    "parent_problem_other",
-    ""
-)
+    parent_problem_other = request.form.get(
+        "parent_problem_other",
+        ""
+    )
 
-parent_problem_text = ", ".join(
-    parent_problem
-)
+    parent_problem_text = ", ".join(
+        parent_problem
+    )
 
-if (
-    "その他" in parent_problem
-    and parent_problem_other.strip()
-):
 
-    if parent_problem_text:
+    if (
+        "その他" in parent_problem
+        and parent_problem_other.strip()
+    ):
 
-        parent_problem_text += (
-            ", その他: "
-            + parent_problem_other.strip()
-        )
+        if parent_problem_text:
 
-    else:
+            parent_problem_text += (
+                ", その他: "
+                + parent_problem_other.strip()
+            )
 
-        parent_problem_text = (
-            "その他: "
-            + parent_problem_other.strip()
-        )
-        
+        else:
+
+            parent_problem_text = (
+                "その他: "
+                + parent_problem_other.strip()
+            )
+
+
     # -----------------------------------------------------
     # Q7
     # どのように塗っていますか？
@@ -283,11 +287,12 @@ if (
             dislike_reason,
             dislike_reason_other,
             parent_problem,
+            parent_problem_other,
             how_to_apply,
             want_self_apply,
             child_idea
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """,
         (
             created_at,
@@ -298,7 +303,8 @@ if (
             child_dislike,
             dislike_reason_text,
             dislike_reason_other,
-            parent_problem,
+            parent_problem_text,
+            parent_problem_other,
             how_to_apply,
             want_self_apply,
             child_idea
@@ -360,6 +366,7 @@ def download_csv():
             dislike_reason,
             dislike_reason_other,
             parent_problem,
+            parent_problem_other,
             how_to_apply,
             want_self_apply,
             child_idea
@@ -391,6 +398,7 @@ def download_csv():
         "嫌がる理由",
         "嫌がる理由・その他",
         "親として困っていること",
+        "親として困っていること・その他",
         "どのように塗っているか",
         "自分から塗りたくなる日焼け止め",
         "あったら嬉しい工夫"
