@@ -6,20 +6,26 @@ from datetime import datetime
 import os
 
 
+# =========================================================
+# Flask設定
+# =========================================================
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 app = Flask(
     __name__,
-    template_folder="../templates",
-    static_folder="../static",
+    template_folder=os.path.join(BASE_DIR, "templates"),
+    static_folder=os.path.join(BASE_DIR, "static"),
     static_url_path="/static"
 )
 
 
+# =========================================================
+# データベース
+# =========================================================
+
 DATABASE = "/tmp/parent_sunscreen_survey.db"
 
-
-# =========================
-# データベース
-# =========================
 
 def get_db():
     conn = sqlite3.connect(DATABASE)
@@ -28,17 +34,21 @@ def get_db():
         CREATE TABLE IF NOT EXISTS responses (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             created_at TEXT,
-            child_age TEXT,
-            sunscreen_use TEXT,
-            use_timing TEXT,
-            use_timing_other TEXT,
-            child_dislike TEXT,
+
+            age TEXT,
+
+            childhood_use TEXT,
+            childhood_timing TEXT,
+            childhood_timing_other TEXT,
+
+            childhood_dislike TEXT,
             dislike_reason TEXT,
             dislike_reason_other TEXT,
-            parent_problem TEXT,
-            how_to_apply TEXT,
-            want_self_apply TEXT,
-            child_idea TEXT
+
+            current_use TEXT,
+            current_problem TEXT,
+
+            ideal_sunscreen TEXT
         )
     """)
 
@@ -47,49 +57,80 @@ def get_db():
     return conn
 
 
-# =========================
+# =========================================================
 # トップページ
-# =========================
+# =========================================================
 
 @app.route("/")
 def index():
     return render_template("index2.html")
 
 
-# =========================
+# =========================================================
 # アンケート送信
-# =========================
+# =========================================================
 
 @app.route("/submit", methods=["POST"])
 def submit():
 
+    # -----------------------------------------------------
     # Q1
-    child_age = request.form.getlist("child_age")
+    # -----------------------------------------------------
 
+    age = request.form.get("age", "")
+
+
+    # -----------------------------------------------------
     # Q2
-    sunscreen_use = request.form.get(
-        "sunscreen_use",
+    # -----------------------------------------------------
+
+    childhood_use = request.form.get(
+        "childhood_use",
         ""
     )
 
+
+    # -----------------------------------------------------
     # Q3
-    use_timing = request.form.get(
-        "use_timing",
+    # -----------------------------------------------------
+
+    childhood_timing = request.form.get(
+        "childhood_timing",
         ""
     )
 
-    use_timing_other = request.form.get(
-        "use_timing_other",
+    childhood_timing_other = request.form.get(
+        "childhood_timing_other",
         ""
     )
 
+
+    if (
+        childhood_timing == "その他"
+        and childhood_timing_other.strip()
+    ):
+        childhood_timing_text = (
+            "その他: "
+            + childhood_timing_other.strip()
+        )
+    else:
+        childhood_timing_text = childhood_timing
+
+
+    # -----------------------------------------------------
     # Q4
-    child_dislike = request.form.get(
-        "child_dislike",
+    # -----------------------------------------------------
+
+    childhood_dislike = request.form.get(
+        "childhood_dislike",
         ""
     )
 
+
+    # -----------------------------------------------------
     # Q5
+    # -----------------------------------------------------
+
     dislike_reason = request.form.getlist(
         "dislike_reason"
     )
@@ -99,67 +140,14 @@ def submit():
         ""
     )
 
-    # Q6
-    parent_problem = request.form.get(
-        "parent_problem",
-        ""
-    )
-
-    # Q7
-    how_to_apply = request.form.get(
-        "how_to_apply",
-        ""
-    )
-
-    # Q8
-    want_self_apply = request.form.get(
-        "want_self_apply",
-        ""
-    )
-
-    # Q9
-    child_idea = request.form.get(
-        "child_idea",
-        ""
-    )
-
-
-    # =========================
-    # 複数選択を文字列に変換
-    # =========================
-
-    child_age_text = ", ".join(child_age)
-
     dislike_reason_text = ", ".join(
         dislike_reason
     )
-
-
-    # =========================
-    # Q3「その他」
-    # =========================
-
-    if (
-        use_timing == "その他"
-        and use_timing_other.strip()
-    ):
-        use_timing_text = (
-            "その他: "
-            + use_timing_other.strip()
-        )
-    else:
-        use_timing_text = use_timing
-
-
-    # =========================
-    # Q5「その他」
-    # =========================
 
     if (
         "その他" in dislike_reason
         and dislike_reason_other.strip()
     ):
-
         if dislike_reason_text:
             dislike_reason_text += (
                 ", その他: "
@@ -172,18 +160,48 @@ def submit():
             )
 
 
-    # =========================
+    # -----------------------------------------------------
+    # Q6
+    # -----------------------------------------------------
+
+    current_use = request.form.get(
+        "current_use",
+        ""
+    )
+
+
+    # -----------------------------------------------------
+    # Q7
+    # -----------------------------------------------------
+
+    current_problem = request.form.get(
+        "current_problem",
+        ""
+    )
+
+
+    # -----------------------------------------------------
+    # Q8
+    # -----------------------------------------------------
+
+    ideal_sunscreen = request.form.get(
+        "ideal_sunscreen",
+        ""
+    )
+
+
+    # -----------------------------------------------------
     # 回答日時
-    # =========================
+    # -----------------------------------------------------
 
     created_at = datetime.now().strftime(
         "%Y-%m-%d %H:%M:%S"
     )
 
 
-    # =========================
-    # データベースへ保存
-    # =========================
+    # -----------------------------------------------------
+    # データベース保存
+    # -----------------------------------------------------
 
     conn = get_db()
 
@@ -191,33 +209,31 @@ def submit():
         """
         INSERT INTO responses (
             created_at,
-            child_age,
-            sunscreen_use,
-            use_timing,
-            use_timing_other,
-            child_dislike,
+            age,
+            childhood_use,
+            childhood_timing,
+            childhood_timing_other,
+            childhood_dislike,
             dislike_reason,
             dislike_reason_other,
-            parent_problem,
-            how_to_apply,
-            want_self_apply,
-            child_idea
+            current_use,
+            current_problem,
+            ideal_sunscreen
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """,
         (
             created_at,
-            child_age_text,
-            sunscreen_use,
-            use_timing_text,
-            use_timing_other,
-            child_dislike,
+            age,
+            childhood_use,
+            childhood_timing_text,
+            childhood_timing_other,
+            childhood_dislike,
             dislike_reason_text,
             dislike_reason_other,
-            parent_problem,
-            how_to_apply,
-            want_self_apply,
-            child_idea
+            current_use,
+            current_problem,
+            ideal_sunscreen
         )
     )
 
@@ -225,18 +241,18 @@ def submit():
     conn.close()
 
 
-    # =========================
-    # 送信完了ページへ
-    # =========================
+    # -----------------------------------------------------
+    # 完了ページ
+    # -----------------------------------------------------
 
     return redirect(
         url_for("thanks")
     )
 
 
-# =========================
+# =========================================================
 # ありがとうページ
-# =========================
+# =========================================================
 
 @app.route("/thanks")
 def thanks():
@@ -245,9 +261,9 @@ def thanks():
     )
 
 
-# =========================
+# =========================================================
 # CSVダウンロード
-# =========================
+# =========================================================
 
 @app.route("/download_csv")
 def download_csv():
@@ -266,17 +282,16 @@ def download_csv():
         SELECT
             id,
             created_at,
-            child_age,
-            sunscreen_use,
-            use_timing,
-            use_timing_other,
-            child_dislike,
+            age,
+            childhood_use,
+            childhood_timing,
+            childhood_timing_other,
+            childhood_dislike,
             dislike_reason,
             dislike_reason_other,
-            parent_problem,
-            how_to_apply,
-            want_self_apply,
-            child_idea
+            current_use,
+            current_problem,
+            ideal_sunscreen
         FROM responses
         ORDER BY id
         """
@@ -287,9 +302,9 @@ def download_csv():
     conn.close()
 
 
-    # =========================
+    # -----------------------------------------------------
     # CSV作成
-    # =========================
+    # -----------------------------------------------------
 
     output = io.StringIO(
         newline=""
@@ -297,23 +312,25 @@ def download_csv():
 
     writer = csv.writer(output)
 
+
     writer.writerow([
         "ID",
         "回答日時",
-        "お子さんの年齢",
-        "日焼け止めの使用状況",
-        "日焼け止めを使うタイミング",
-        "使うタイミング・その他",
-        "子どもが嫌がること",
-        "嫌がる理由",
-        "嫌がる理由・その他",
-        "親が困っていること",
-        "嫌がる子どもへの塗り方",
-        "自分から塗りたくなる日焼け止めを使ってみたいか",
-        "子どもが喜びそうな工夫"
+        "年代",
+        "子どものころ日焼け止めを使っていたか",
+        "子どものころ使っていたタイミング",
+        "タイミング・その他",
+        "子どものころ日焼け止めを嫌がったか",
+        "嫌だった理由",
+        "嫌だった理由・その他",
+        "現在の日焼け止め使用状況",
+        "現在困っていること",
+        "こんな日焼け止めなら使ってみたい"
     ])
 
+
     writer.writerows(rows)
+
 
     csv_data = "\ufeff" + output.getvalue()
 
@@ -327,15 +344,16 @@ def download_csv():
         "Content-Disposition"
     ] = (
         "attachment; "
-        "filename=parent_sunscreen_survey.csv"
+        "filename=childhood_current_sunscreen_survey.csv"
     )
+
 
     return response
 
 
-# =========================
+# =========================================================
 # ローカル実行
-# =========================
+# =========================================================
 
 if __name__ == "__main__":
     app.run(
