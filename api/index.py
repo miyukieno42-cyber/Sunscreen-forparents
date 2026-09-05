@@ -187,16 +187,42 @@ def submit():
 
 
     # -----------------------------------------------------
-    # Q6
-    # 親として困っていること
-    # -----------------------------------------------------
+　　 # Q6
+　 　# 親として困っていること
+　　 # -----------------------------------------------------
 
-    parent_problem = request.form.get(
-        "parent_problem",
-        ""
-    )
+　　　parent_problem = request.form.getlist(
+       "parent_problem"
+   )
 
+parent_problem_other = request.form.get(
+    "parent_problem_other",
+    ""
+)
 
+parent_problem_text = ", ".join(
+    parent_problem
+)
+
+if (
+    "その他" in parent_problem
+    and parent_problem_other.strip()
+):
+
+    if parent_problem_text:
+
+        parent_problem_text += (
+            ", その他: "
+            + parent_problem_other.strip()
+        )
+
+    else:
+
+        parent_problem_text = (
+            "その他: "
+            + parent_problem_other.strip()
+        )
+        
     # -----------------------------------------------------
     # Q7
     # どのように塗っていますか？
