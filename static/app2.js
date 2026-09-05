@@ -76,6 +76,71 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function validateQuestion(question) {
 
+        // -------------------------------------------------
+        // Q6：複数回答
+        // -------------------------------------------------
+
+        if (
+            question.dataset.question === "6"
+        ) {
+
+            const checked =
+                question.querySelectorAll(
+                    'input[name="parent_problem"]:checked'
+                );
+
+            // 1つも選んでいない場合
+            if (checked.length === 0) {
+
+                alert(
+                    "当てはまるものを1つ以上選択してください。"
+                );
+
+                return false;
+            }
+
+
+            // 「その他」を選んだ場合
+            const other =
+                question.querySelector(
+                    "#parentProblemOther"
+                );
+
+            if (
+                other &&
+                other.checked
+            ) {
+
+                const otherText =
+                    question.querySelector(
+                        "#parentProblemOtherText"
+                    );
+
+                if (
+                    !otherText ||
+                    !otherText.value.trim()
+                ) {
+
+                    alert(
+                        "「その他」の内容を入力してください。"
+                    );
+
+                    if (otherText) {
+                        otherText.focus();
+                    }
+
+                    return false;
+                }
+
+            }
+
+        }
+
+
+        // -------------------------------------------------
+        // 通常の必須チェック
+        // -------------------------------------------------
+
         const requiredInputs =
             question.querySelectorAll(
                 "input[required], textarea[required], select[required]"
@@ -315,6 +380,53 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // =====================================================
+    // Q6「その他」
+    // =====================================================
+
+    const parentProblemOther =
+        document.getElementById(
+            "parentProblemOther"
+        );
+
+    const parentProblemOtherText =
+        document.getElementById(
+            "parentProblemOtherText"
+        );
+
+
+    if (
+        parentProblemOther &&
+        parentProblemOtherText
+    ) {
+
+        parentProblemOther.addEventListener(
+            "change",
+            function () {
+
+                if (
+                    parentProblemOther.checked
+                ) {
+
+                    parentProblemOtherText.style.display =
+                        "block";
+
+                } else {
+
+                    parentProblemOtherText.style.display =
+                        "none";
+
+                    parentProblemOtherText.value =
+                        "";
+
+                }
+
+            }
+        );
+
+    }
+
+
+    // =====================================================
     // 初期表示
     // =====================================================
 
@@ -323,19 +435,3 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 });
-// Q6「その他」の表示・非表示
-const parentProblemOther = document.getElementById("parentProblemOther");
-const parentProblemOtherText = document.getElementById("parentProblemOtherText");
-
-if (parentProblemOther && parentProblemOtherText) {
-    parentProblemOther.addEventListener("change", function () {
-
-        if (this.checked) {
-            parentProblemOtherText.style.display = "block";
-        } else {
-            parentProblemOtherText.style.display = "none";
-            parentProblemOtherText.value = "";
-        }
-
-    });
-}
