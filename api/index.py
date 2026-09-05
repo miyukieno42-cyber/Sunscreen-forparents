@@ -2,14 +2,15 @@ from flask import Flask, render_template, request, redirect, url_for, Response
 import sqlite3
 import csv
 import io
-import os
 from datetime import datetime
+import os
 
 
 app = Flask(
     __name__,
     template_folder="../templates",
-    static_folder="../static"
+    static_folder="../static",
+    static_url_path="/static"
 )
 
 
@@ -21,7 +22,6 @@ DATABASE = "/tmp/parent_sunscreen_survey.db"
 # =========================
 
 def get_db():
-
     conn = sqlite3.connect(DATABASE)
 
     conn.execute("""
@@ -48,17 +48,16 @@ def get_db():
 
 
 # =========================
-# アンケート画面
+# トップページ
 # =========================
 
 @app.route("/")
 def index():
-
     return render_template("index2.html")
 
 
 # =========================
-# 回答送信
+# アンケート送信
 # =========================
 
 @app.route("/submit", methods=["POST"])
@@ -126,7 +125,7 @@ def submit():
 
 
     # =========================
-    # 複数選択を文字列にする
+    # 複数選択を文字列に変換
     # =========================
 
     child_age_text = ", ".join(child_age)
@@ -137,25 +136,23 @@ def submit():
 
 
     # =========================
-    # Q3 その他
+    # Q3「その他」
     # =========================
 
     if (
         use_timing == "その他"
         and use_timing_other.strip()
     ):
-
         use_timing_text = (
-            f"その他: {use_timing_other.strip()}"
+            "その他: "
+            + use_timing_other.strip()
         )
-
     else:
-
         use_timing_text = use_timing
 
 
     # =========================
-    # Q5 その他
+    # Q5「その他」
     # =========================
 
     if (
@@ -164,17 +161,14 @@ def submit():
     ):
 
         if dislike_reason_text:
-
             dislike_reason_text += (
-                f", その他: "
-                f"{dislike_reason_other.strip()}"
+                ", その他: "
+                + dislike_reason_other.strip()
             )
-
         else:
-
             dislike_reason_text = (
-                f"その他: "
-                f"{dislike_reason_other.strip()}"
+                "その他: "
+                + dislike_reason_other.strip()
             )
 
 
@@ -188,7 +182,7 @@ def submit():
 
 
     # =========================
-    # 保存
+    # データベースへ保存
     # =========================
 
     conn = get_db()
@@ -228,9 +222,12 @@ def submit():
     )
 
     conn.commit()
-
     conn.close()
 
+
+    # =========================
+    # 送信完了ページへ
+    # =========================
 
     return redirect(
         url_for("thanks")
@@ -238,12 +235,11 @@ def submit():
 
 
 # =========================
-# ありがとうございました
+# ありがとうページ
 # =========================
 
 @app.route("/thanks")
 def thanks():
-
     return render_template(
         "thanks2.html"
     )
@@ -257,7 +253,6 @@ def thanks():
 def download_csv():
 
     if not os.path.exists(DATABASE):
-
         return (
             "まだ回答データがありません。",
             200
@@ -265,7 +260,6 @@ def download_csv():
 
 
     conn = get_db()
-
 
     cursor = conn.execute(
         """
@@ -288,16 +282,20 @@ def download_csv():
         """
     )
 
-
     rows = cursor.fetchall()
 
     conn.close()
 
 
-    output = io.StringIO()
+    # =========================
+    # CSV作成
+    # =========================
+
+    output = io.StringIO(
+        newline=""
+    )
 
     writer = csv.writer(output)
-
 
     writer.writerow([
         "ID",
@@ -315,15 +313,15 @@ def download_csv():
         "子どもが喜びそうな工夫"
     ])
 
-
     writer.writerows(rows)
+
+    csv_data = "\ufeff" + output.getvalue()
 
 
     response = Response(
-        output.getvalue(),
-        mimetype="text/csv; charset=utf-8"
+        csv_data,
+        mimetype="text/csv"
     )
-
 
     response.headers[
         "Content-Disposition"
@@ -331,7 +329,6 @@ def download_csv():
         "attachment; "
         "filename=parent_sunscreen_survey.csv"
     )
-
 
     return response
 
@@ -341,7 +338,6 @@ def download_csv():
 # =========================
 
 if __name__ == "__main__":
-
     app.run(
         debug=True
     )
